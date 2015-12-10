@@ -33,7 +33,7 @@ public class TestProdCons extends Simulateur {
 		int wNbProd = wProperties.getInt("nbProd");
 		int wNbCons = wProperties.getInt("nbCons");
 
-		ProdCons wProdCons = new ProdCons(wTailleBuffer, wNbProd);
+		ProdCons wProdCons = new ProdCons(wTailleBuffer);
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
 
 		/* Création des producteurs */

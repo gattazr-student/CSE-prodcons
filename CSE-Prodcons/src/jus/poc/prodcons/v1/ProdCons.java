@@ -18,7 +18,7 @@ public class ProdCons implements Tampon {
 	 * @param taille
 	 *            La taille de notre buffer
 	 */
-	public ProdCons(int aTaille, int nbProducteurs) {
+	public ProdCons(int aTaille) {
 		buffer = new Message[aTaille];
 	}
 
