@@ -7,29 +7,58 @@ import jus.poc.prodcons._Producteur;
 
 public class ProdCons implements Tampon {
 
+	int in = 0;
+	int out = 0;
+	int nbPlein = 0;
+
+	Message[] buffer = null;
+	Semaphore prod = null;
+	Semaphore cons = null;
+
+	/**
+	 * 
+	 * @param taille
+	 *            La taille de notre buffer
+	 */
+	public ProdCons(int aTaille) {
+		this.buffer = new Message[aTaille];
+		this.prod = new Semaphore(1);
+		this.cons = new Semaphore(1);
+	}
+
 	@Override
-	public int enAttente() {
+	public synchronized int enAttente() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public synchronized Message get(_Consommateur aConsommateur)
+	public Message get(_Consommateur aConsommateur)
 			throws Exception, InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+		this.cons.attendre();
+		Message wMessage;
+		synchronized (this) {
+			wMessage = buffer[out];
+			out = (out + 1) % taille();
+		}
+		this.prod.reveiller();
+		return wMessage;
 	}
 
 	@Override
-	public synchronized void put(_Producteur aProducteur, Message aMessage)
+	public void put(_Producteur aProducteur, Message aMessage)
 			throws Exception, InterruptedException {
-		// TODO Auto-generated method stub
+		this.prod.attendre();
+		synchronized (this) {
+			buffer[in] = aMessage;
+			in = (in + 1) % taille();
+		}
+		this.cons.reveiller();
 	}
 
 	@Override
 	public int taille() {
-		// TODO Auto-generated method stub
-		return 0;
+		return buffer.length;
 	}
 
 }
