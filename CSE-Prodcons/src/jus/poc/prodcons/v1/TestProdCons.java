@@ -37,8 +37,10 @@ public class TestProdCons extends Simulateur {
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
 
 		/* Création des producteurs */
+		/* TODO: use a real logger */
 		System.out.println("Producteur à creer : " + wNbProd);
 		for (int wI = 0; wI < wNbProd; wI++) {
+			/* TODO: use a real logger */
 			System.out.println("Creation producteur " + (wI + 1));
 			Producteur wProducteur = new Producteur(this.observateur, wProdCons,
 					wTProduction, wDTProduction, wNbMessage, wDNbMessage);
@@ -47,8 +49,10 @@ public class TestProdCons extends Simulateur {
 		}
 
 		/* Création des consommateurs */
+		/* TODO: use a real logger */
 		System.out.println("Consommateur à creer : " + wNbCons);
 		for (int wI = 0; wI < wNbCons; wI++) {
+			/* TODO: use a real logger */
 			System.out.println("Creation consommateur " + (wI + 1));
 			new Consommateur(this.observateur, wProdCons, wTConsommation,
 					wDTConsommation, wNbExemplaire, wDNbExemplaire).start();
@@ -57,6 +61,7 @@ public class TestProdCons extends Simulateur {
 		for (Producteur wProducteur : wProducteurs) {
 			wProducteur.join();
 		}
+		/* TODO: use a real logger */
 		System.out.println("Production de message terminée");
 		/*
 		 * Quand cette boucle est terminé, tous les producteurs ont terminé
@@ -67,7 +72,7 @@ public class TestProdCons extends Simulateur {
 			Thread.sleep(500);// Sorry :-)
 		} while (wProdCons.enAttente() > 0);
 		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
-
+		/* TODO: use a real logger */
 		System.out.println("Consommation de message terminée");
 		System.exit(0);
 

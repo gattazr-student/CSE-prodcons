@@ -38,7 +38,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			try {
 				wMessage = this.pProdCons.get(this);
 				/* Impression d'un message de log */
-				/* TODO: Change this to use a real logger */
+				/* TODO: use a real logger */
 				System.out.println(String.format("Message consommé par %d : %s",
 						identification(), wMessage));
 			} catch (InterruptedException e) {

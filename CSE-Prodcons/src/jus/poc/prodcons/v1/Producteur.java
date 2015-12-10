@@ -52,7 +52,7 @@ public class Producteur extends Acteur implements _Producteur {
 			try {
 				this.pProdCons.put(this, wMessage);
 				/* Impression d'un message de log */
-				/* TODO: Change this to use a real logger */
+				/* TODO: use a real logger */
 				System.out.println(wMessage);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
