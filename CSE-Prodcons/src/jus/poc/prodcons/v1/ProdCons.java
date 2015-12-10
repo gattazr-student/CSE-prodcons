@@ -11,22 +11,22 @@ public class ProdCons implements Tampon {
 	int out = 0;
 	int nbPlein = 0;
 
-	Message[] buffer = new Message[taille()];
+	Message[] buffer = null;
 
 	/**
 	 * 
 	 * @param taille
 	 *            La taille de notre buffer
 	 */
-	public ProdCons(int taille) {
-		buffer = new Message[taille];
+	public ProdCons(int aTaille, int nbProducteurs) {
+		buffer = new Message[aTaille];
 	}
 
 	/**
 	 * Nombre de messages present dans le buffer ??
 	 */
 	@Override
-	public int enAttente() {
+	public synchronized int enAttente() {
 		return nbPlein;
 	}
 
@@ -38,7 +38,7 @@ public class ProdCons implements Tampon {
 		}
 
 		Message msg = buffer[out];
-		out += 1 % taille();
+		out = (out + 1) % taille();
 		nbPlein--;
 		notifyAll();
 		return msg;

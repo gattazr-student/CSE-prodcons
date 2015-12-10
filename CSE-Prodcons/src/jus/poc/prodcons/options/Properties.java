@@ -1,6 +1,6 @@
 package jus.poc.prodcons.options;
 
-final class Properties extends java.util.Properties {
+public final class Properties extends java.util.Properties {
 
 	/**
 	 * 
