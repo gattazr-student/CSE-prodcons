@@ -6,6 +6,7 @@ import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons._Producteur;
+import jus.poc.prodcons.utils.SimpleLogger;
 
 public class Producteur extends Acteur implements _Producteur {
 
@@ -51,9 +52,8 @@ public class Producteur extends Acteur implements _Producteur {
 			/* Dépose le message */
 			try {
 				this.pProdCons.put(this, wMessage);
-				/* Impression d'un message de log */
-				/* TODO: use a real logger */
-				System.out.println(wMessage);
+				/* Impression d'un message dans le log */
+				SimpleLogger.out.logInfo(this, "run", wMessage.toString());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
