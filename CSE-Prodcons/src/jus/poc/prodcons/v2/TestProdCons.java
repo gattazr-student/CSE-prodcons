@@ -89,11 +89,11 @@ public class TestProdCons extends Simulateur {
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
 
 		/* Création des producteurs */
-		SimpleLogger.out.logInfo(this, "run", "%d Producteur(s) à créer",
+		SimpleLogger.out.logInfo(this, "<Main>", "%d Producteur(s) à créer",
 				wNbProd);
 		for (int wI = 0; wI < wNbProd; wI++) {
-			SimpleLogger.out.logDebug(this, "run", "Création du producteur %d",
-					(wI + 1));
+			SimpleLogger.out.logDebug(this, "<Main>",
+					"Création du producteur %d", (wI + 1));
 			Producteur wProducteur = new Producteur(this.observateur, wProdCons,
 					wTProduction, wDTProduction, wNbMessage, wDNbMessage);
 			wProducteurs.add(wProducteur);
@@ -101,10 +101,10 @@ public class TestProdCons extends Simulateur {
 		}
 
 		/* Création des consommateurs */
-		SimpleLogger.out.logInfo(this, "run", "%d Consommateur(s) à créer",
+		SimpleLogger.out.logInfo(this, "<Main>", "%d Consommateur(s) à créer",
 				wNbCons);
 		for (int wI = 0; wI < wNbCons; wI++) {
-			SimpleLogger.out.logDebug(this, "run",
+			SimpleLogger.out.logDebug(this, "<Main>",
 					"Création du consommateur %d", (wI + 1));
 			new Consommateur(this.observateur, wProdCons, wTConsommation,
 					wDTConsommation, wNbExemplaire, wDNbExemplaire).start();
@@ -113,7 +113,8 @@ public class TestProdCons extends Simulateur {
 		for (Producteur wProducteur : wProducteurs) {
 			wProducteur.join();
 		}
-		SimpleLogger.out.logInfo(this, "run", "Production de message terminée");
+		SimpleLogger.out.logInfo(this, "<Main>",
+				"Production de message terminée");
 		/*
 		 * Quand cette boucle est terminé, tous les producteurs ont terminé
 		 * leurs traitements
@@ -124,7 +125,7 @@ public class TestProdCons extends Simulateur {
 		} while (wProdCons.enAttente() > 0);
 		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
 
-		SimpleLogger.out.logInfo(this, "run",
+		SimpleLogger.out.logInfo(this, "<Main>",
 				"Lecture de tous les messages terminés");
 		System.exit(0);
 

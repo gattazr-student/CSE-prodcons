@@ -4,6 +4,7 @@ import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
+import jus.poc.prodcons.utils.SimpleLogger;
 
 public class ProdCons implements Tampon {
 
@@ -40,6 +41,11 @@ public class ProdCons implements Tampon {
 			wMessage = buffer[out];
 			out = (out + 1) % taille();
 			nbPlein--;
+
+			/* Impression d'un message dans le log */
+			SimpleLogger.out.logInfo(this, "<Consommation>",
+					"%s consommé par Consommateur %d ", wMessage,
+					aConsommateur.identification());
 		}
 		this.prod.reveiller();
 		return wMessage;
@@ -53,6 +59,11 @@ public class ProdCons implements Tampon {
 			buffer[in] = aMessage;
 			in = (in + 1) % taille();
 			nbPlein++;
+
+			/* Impression d'un message dans le log */
+			SimpleLogger.out.logInfo(this, "<Production>",
+					"%s produit par Producteur %d ", aMessage,
+					aProducteur.identification());
 		}
 		this.cons.reveiller();
 	}

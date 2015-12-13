@@ -6,7 +6,6 @@ import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons._Consommateur;
-import jus.poc.prodcons.utils.SimpleLogger;
 
 public class Consommateur extends Acteur implements _Consommateur {
 
@@ -38,19 +37,17 @@ public class Consommateur extends Acteur implements _Consommateur {
 			/* Récupère un message */
 			try {
 				wMessage = this.pProdCons.get(this);
-				/* Impression d'un message dans le log */
-				SimpleLogger.out.logInfo(this, "run",
-						"Message consomme par Consommateur %d -> %s",
-						identification(), wMessage);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-			/* Attente active */
+			/* Calcul du temps de traitement */
 			wAlea = Aleatoire.valeur(moyenneTempsDeTraitement(),
 					deviationTempsDeTraitement());
+
+			/* Attente active pour simuler un traitement */
 			try {
 				Thread.sleep(wAlea);
 			} catch (InterruptedException e) {

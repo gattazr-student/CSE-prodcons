@@ -5,17 +5,17 @@ import jus.poc.prodcons.Message;
 public class MessageX implements Message {
 
 	int pEmmeteurId;
-	String pContenu;
+	int pNumeroMessage;
 
-	public MessageX(int aCreateur, String aContenu) {
+	public MessageX(int aCreateur, int aNumeroMessage) {
 		this.pEmmeteurId = aCreateur;
-		this.pContenu = aContenu;
+		this.pNumeroMessage = aNumeroMessage;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Message cree par le Producteur %d : %s",
-				this.pEmmeteurId, this.pContenu);
+		return String.format("[Producteur %d : Message %d-%d]",
+				this.pEmmeteurId, this.pEmmeteurId, this.pNumeroMessage);
 	}
 
 }
