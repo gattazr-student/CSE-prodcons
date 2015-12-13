@@ -44,7 +44,6 @@ public class TestProdCons extends Simulateur {
 			String wArgValue = this.pArgs[wArgIdx];
 
 			if (SimpleLogger.out.isValidLevel(wArgValue)) {
-				System.out.println("valid log level : " + wArgValue);
 				wLevel = wArgValue;
 			} else if (SimpleLogger.out.isValidFileFlag(wArgValue)) {
 				wLogInFile = true;

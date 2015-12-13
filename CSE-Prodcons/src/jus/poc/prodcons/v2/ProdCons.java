@@ -16,7 +16,7 @@ public class ProdCons implements Tampon {
 	Semaphore cons = null;
 
 	/**
-	 * 
+	 *
 	 * @param taille
 	 *            La taille de notre buffer
 	 */
@@ -28,8 +28,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized int enAttente() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nbPlein;
 	}
 
 	@Override
@@ -40,6 +39,7 @@ public class ProdCons implements Tampon {
 		synchronized (this) {
 			wMessage = buffer[out];
 			out = (out + 1) % taille();
+			nbPlein--;
 		}
 		this.prod.reveiller();
 		return wMessage;
@@ -52,6 +52,7 @@ public class ProdCons implements Tampon {
 		synchronized (this) {
 			buffer[in] = aMessage;
 			in = (in + 1) % taille();
+			nbPlein++;
 		}
 		this.cons.reveiller();
 	}

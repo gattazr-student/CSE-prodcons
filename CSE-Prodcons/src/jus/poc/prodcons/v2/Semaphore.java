@@ -2,7 +2,7 @@ package jus.poc.prodcons.v2;
 
 public class Semaphore {
 
-	int pResidu;
+	private int pResidu;
 
 	public Semaphore(int aResidu) {
 		this.pResidu = aResidu;

@@ -1,21 +1,73 @@
 package jus.poc.prodcons.v2;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Simulateur;
 import jus.poc.prodcons.options.Properties;
+import jus.poc.prodcons.utils.SimpleLogger;
 
 public class TestProdCons extends Simulateur {
 
-	public TestProdCons(Observateur aObservateur) {
+	private static String LOG_LEVEL = "INFO";
+	private static String LOG_FOLDER = "logs/";
+	private static boolean LOG_IN_FILE = false;
+	private static boolean LOG_IN_CONSOLE = false;
+
+	/**
+	 * Entry point
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new TestProdCons(new Observateur(), args).start();
+	}
+
+	/* Arguments the program is started with */
+	private String[] pArgs;
+
+	public TestProdCons(Observateur aObservateur, String[] aArgs) {
 		super(aObservateur);
-		// TODO Auto-generated constructor stub
+		this.pArgs = aArgs;
+	}
+
+	public void createLogger() {
+		/* Default params for log */
+		String wLevel = LOG_LEVEL;
+		boolean wLogInConsole = LOG_IN_CONSOLE;
+		boolean wLogInFile = LOG_IN_FILE;
+
+		/* Loads params from console args */
+		for (int wArgIdx = 0; wArgIdx < this.pArgs.length; wArgIdx++) {
+			String wArgValue = this.pArgs[wArgIdx];
+
+			if (SimpleLogger.out.isValidLevel(wArgValue)) {
+				wLevel = wArgValue;
+			} else if (SimpleLogger.out.isValidFileFlag(wArgValue)) {
+				wLogInFile = true;
+			} else if (SimpleLogger.out.isValidConsoleFlag(wArgValue)) {
+				wLogInConsole = true;
+			}
+		}
+		/* Create the logger */
+		try {
+			SimpleLogger.out.setLogFolderPath(LOG_FOLDER);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		SimpleLogger.out.open(this.getClass().getSimpleName(), wLevel,
+				wLogInConsole, wLogInFile);
 	}
 
 	@Override
 	protected void run() throws Exception {
+		/* Create the logger */
+		createLogger();
+
+		/* Read properties in the option file */
 		Properties wProperties = new Properties(
 				"jus/poc/prodcons/options/options.v1.xml");
 		int wTProduction = wProperties.getInt("tempsMoyenProduction");
@@ -37,11 +89,11 @@ public class TestProdCons extends Simulateur {
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
 
 		/* Création des producteurs */
-		/* TODO: use a real logger */
-		System.out.println("Producteur à creer : " + wNbProd);
+		SimpleLogger.out.logInfo(this, "run", "%d Producteur(s) à créer",
+				wNbProd);
 		for (int wI = 0; wI < wNbProd; wI++) {
-			/* TODO: use a real logger */
-			System.out.println("Creation producteur " + (wI + 1));
+			SimpleLogger.out.logDebug(this, "run", "Création du producteur %d",
+					(wI + 1));
 			Producteur wProducteur = new Producteur(this.observateur, wProdCons,
 					wTProduction, wDTProduction, wNbMessage, wDNbMessage);
 			wProducteurs.add(wProducteur);
@@ -49,11 +101,11 @@ public class TestProdCons extends Simulateur {
 		}
 
 		/* Création des consommateurs */
-		/* TODO: use a real logger */
-		System.out.println("Consommateur à creer : " + wNbCons);
+		SimpleLogger.out.logInfo(this, "run", "%d Consommateur(s) à créer",
+				wNbCons);
 		for (int wI = 0; wI < wNbCons; wI++) {
-			/* TODO: use a real logger */
-			System.out.println("Creation consommateur " + (wI + 1));
+			SimpleLogger.out.logDebug(this, "run",
+					"Création du consommateur %d", (wI + 1));
 			new Consommateur(this.observateur, wProdCons, wTConsommation,
 					wDTConsommation, wNbExemplaire, wDNbExemplaire).start();
 		}
@@ -61,8 +113,7 @@ public class TestProdCons extends Simulateur {
 		for (Producteur wProducteur : wProducteurs) {
 			wProducteur.join();
 		}
-		/* TODO: use a real logger */
-		System.out.println("Production de message terminée");
+		SimpleLogger.out.logInfo(this, "run", "Production de message terminée");
 		/*
 		 * Quand cette boucle est terminé, tous les producteurs ont terminé
 		 * leurs traitements
@@ -72,19 +123,11 @@ public class TestProdCons extends Simulateur {
 			Thread.sleep(500);// Sorry :-)
 		} while (wProdCons.enAttente() > 0);
 		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
-		/* TODO: use a real logger */
-		System.out.println("Consommation de message terminée");
+
+		SimpleLogger.out.logInfo(this, "run",
+				"Lecture de tous les messages terminés");
 		System.exit(0);
 
-	}
-
-	/**
-	 * Entry point
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new TestProdCons(new Observateur()).start();
 	}
 
 }
