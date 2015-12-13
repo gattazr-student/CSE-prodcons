@@ -343,7 +343,6 @@ public class SimpleLogger implements ISimpleLogger {
 
 	@Override
 	public boolean isLoggable(Level aLevel) {
-
 		return (pLogger != null) && pLogger.isLoggable(aLevel);
 	}
 

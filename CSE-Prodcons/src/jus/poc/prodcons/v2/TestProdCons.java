@@ -69,7 +69,7 @@ public class TestProdCons extends Simulateur {
 
 		/* Read properties in the option file */
 		Properties wProperties = new Properties(
-				"jus/poc/prodcons/options/options.v1.xml");
+				"jus/poc/prodcons/options/options.v2.xml");
 		int wTProduction = wProperties.getInt("tempsMoyenProduction");
 		int wDTProduction = wProperties.getInt("deviationTempsMoyenProduction");
 		int wNbMessage = wProperties.getInt("nombreMoyenDeProduction");

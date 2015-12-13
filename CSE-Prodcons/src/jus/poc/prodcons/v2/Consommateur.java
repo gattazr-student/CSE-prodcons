@@ -41,7 +41,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 				/* Impression d'un message dans le log */
 				SimpleLogger.out.logInfo(this, "run",
 						"Message consomme par Consommateur %d -> %s",
-						identification(), wMessage.toString());
+						identification(), wMessage);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
