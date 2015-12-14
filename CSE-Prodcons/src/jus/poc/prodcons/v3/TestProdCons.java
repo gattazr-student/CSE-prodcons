@@ -126,7 +126,7 @@ public class TestProdCons extends Simulateur {
 		 */
 
 		do {
-			Thread.sleep(500);// Sorry :-)
+			Thread.yield();// Sorry :-)
 		} while (wProdCons.enAttente() > 0);
 		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
 
