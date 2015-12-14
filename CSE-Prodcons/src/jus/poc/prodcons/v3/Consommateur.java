@@ -13,14 +13,11 @@ public class Consommateur extends Acteur implements _Consommateur {
 	private ProdCons pProdCons;
 
 	protected Consommateur(Observateur aObservateur, ProdCons aProdCons,
-			int aMoyenneTempsDeTraitement, int aDeviationTempsDeTraitement,
-			int aMoyenneNbMessages, int aDeviationNbMessages)
+			int aMoyenneTempsDeTraitement, int aDeviationTempsDeTraitement)
 					throws ControlException {
 		super(Acteur.typeConsommateur, aObservateur, aMoyenneTempsDeTraitement,
 				aDeviationTempsDeTraitement);
 
-		this.pNbMessage = Aleatoire.valeur(aMoyenneNbMessages,
-				aDeviationNbMessages);
 		this.pProdCons = aProdCons;
 	}
 
@@ -33,7 +30,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	public void run() {
 		int wAlea;
 		Message wMessage = null;
-		while (nombreDeMessages() > 0) {
+		while (true) {
 			/* Récupère un message */
 			try {
 				wMessage = this.pProdCons.get(this);
@@ -61,7 +58,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 				e.printStackTrace();
 			}
 
-			this.pNbMessage--;
+			this.pNbMessage++;
 		}
 	}
 }

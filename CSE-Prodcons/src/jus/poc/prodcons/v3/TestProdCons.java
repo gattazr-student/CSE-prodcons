@@ -78,9 +78,6 @@ public class TestProdCons extends Simulateur {
 		int wTConsommation = wProperties.getInt("tempsMoyenConsommation");
 		int wDTConsommation = wProperties
 				.getInt("deviationTempsMoyenConsommation");
-		int wNbExemplaire = wProperties.getInt("nombreMoyenNbExemplaire");;
-		int wDNbExemplaire = wProperties
-				.getInt("deviationNombreMoyenNbExemplaire");
 		int wTailleBuffer = wProperties.getInt("nbBuffer");
 		int wNbProd = wProperties.getInt("nbProd");
 		int wNbCons = wProperties.getInt("nbCons");
@@ -112,8 +109,7 @@ public class TestProdCons extends Simulateur {
 			SimpleLogger.out.logDebug(this, "<Main>",
 					"Création du consommateur %d", (wI + 1));
 			Consommateur wConsommateur = new Consommateur(this.observateur,
-					wProdCons, wTConsommation, wDTConsommation, wNbExemplaire,
-					wDNbExemplaire);
+					wProdCons, wTConsommation, wDTConsommation);
 			/* Appel à Observateur */
 			this.observateur.newConsommateur(wConsommateur);
 			wConsommateur.start();
