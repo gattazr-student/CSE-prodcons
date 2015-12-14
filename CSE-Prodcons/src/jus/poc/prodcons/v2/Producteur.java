@@ -37,7 +37,7 @@ public class Producteur extends Acteur implements _Producteur {
 		Message wMessage = null;
 		while (nombreDeMessages() > 0) {
 			/* Création d'un messageX */
-			wMessage = new MessageX(this.identification(), wI);
+			wMessage = new MessageX(this, wI);
 
 			/* Calcul du temps de traitement */
 			wAlea = Aleatoire.valeur(moyenneTempsDeTraitement(),
