@@ -13,21 +13,50 @@ import jus.poc.prodcons.v2.Semaphore;
 
 public class ProdCons implements Tampon {
 
+	/**
+	 * Prochain index d'écriture dans le buffer
+	 */
 	private int in = 0;
+	/**
+	 * Prochain index de lecture dans le buffer
+	 */
 	private int out = 0;
+	/**
+	 * Nombre de messages actuellement dans le buffer
+	 */
 	private int nbPlein = 0;
+	/**
+	 * Observateur
+	 */
 	private Observateur pObservateur;
 
-	Message[] buffer = null;
-	Map<Integer, Semaphore> prodAttente = null;
-	Map<Integer, Integer> messageRestants = null;
-	Semaphore prod = null;
-	Semaphore cons = null;
+	/**
+	 * Buffer contenant des Messages
+	 */
+	private Message[] buffer = null;
+	/**
+	 * Semaphores bloquant les producteurs pendant que leurs message est consomé
+	 */
+	private Map<Integer, Semaphore> prodAttente = null;
+	/**
+	 * Stocke le nombre de fois le message produit par le producteur dont
+	 * l'identifiant est la clé de la map doit encore être consommé
+	 */
+	private Map<Integer, Integer> messageRestants = null;
+
+	/**
+	 * Semaphore des Producteurs
+	 */
+	private Semaphore prod = null;
+	/**
+	 * Semaphore des Consommateurs
+	 */
+	private Semaphore cons = null;
 
 	/**
 	 *
 	 * @param taille
-	 *            La taille de notre buffer
+	 *            Taille du buffer utilisé pour stocker des Messages
 	 */
 	public ProdCons(Observateur aObservateur, int aTaille) {
 		this.pObservateur = aObservateur;

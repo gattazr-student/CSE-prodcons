@@ -8,24 +8,33 @@ import jus.poc.prodcons.utils.SimpleLogger;
 
 public class ProdCons implements Tampon {
 
-	int in = 0;
-	int out = 0;
-	int nbPlein = 0;
+	/**
+	 * Prochain index d'écriture dans le buffer
+	 */
+	private int in = 0;
+	/**
+	 * Prochain index de lecture dans le buffer
+	 */
+	private int out = 0;
+	/**
+	 * Nombre de messages actuellement dans le buffer
+	 */
+	private int nbPlein = 0;
 
-	Message[] buffer = null;
+	/**
+	 * Buffer contenant des Messages
+	 */
+	private Message[] buffer = null;
 
 	/**
 	 *
 	 * @param taille
-	 *            La taille de notre buffer
+	 *            Taille du buffer utilisé pour stocker des Messages
 	 */
 	public ProdCons(int aTaille) {
 		buffer = new Message[aTaille];
 	}
 
-	/**
-	 * Nombre de messages present dans le buffer ??
-	 */
 	@Override
 	public synchronized int enAttente() {
 		return nbPlein;

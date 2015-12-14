@@ -10,19 +10,42 @@ import jus.poc.prodcons.v2.Semaphore;
 
 public class ProdCons implements Tampon {
 
+	/**
+	 * Prochain index d'écriture dans le buffer
+	 */
 	private int in = 0;
+	/**
+	 * Prochain index de lecture dans le buffer
+	 */
 	private int out = 0;
+	/**
+	 * Nombre de messages actuellement dans le buffer
+	 */
 	private int nbPlein = 0;
+
+	/**
+	 * Observateur
+	 */
 	private Observateur pObservateur;
 
-	Message[] buffer = null;
-	Semaphore prod = null;
-	Semaphore cons = null;
+	/**
+	 * Buffer contenant des Messages
+	 */
+	private Message[] buffer = null;
+
+	/**
+	 * Semaphore des Producteurs
+	 */
+	private Semaphore prod = null;
+	/**
+	 * Semaphore des Consommateurs
+	 */
+	private Semaphore cons = null;
 
 	/**
 	 *
 	 * @param taille
-	 *            La taille de notre buffer
+	 *            Taille du buffer utilisé pour stocker des Messages
 	 */
 	public ProdCons(Observateur aObservateur, int aTaille) {
 		this.pObservateur = aObservateur;

@@ -3,18 +3,31 @@ package jus.poc.prodcons.v3;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons._Producteur;
 
+/**
+ * MessageX
+ *
+ */
 public class MessageX implements Message {
 
+	/**
+	 * Producteur du message
+	 */
 	private _Producteur pProducteur;
+	/**
+	 * Identifiant du message
+	 */
 	private int pNumeroMessage;
 
+	/**
+	 *
+	 * @param aProducteur
+	 *            Producteur du message
+	 * @param aNumeroMessage
+	 *            Identifiant du message
+	 */
 	public MessageX(_Producteur aProducteur, int aNumeroMessage) {
 		this.pProducteur = aProducteur;
 		this.pNumeroMessage = aNumeroMessage;
-	}
-
-	public int getProducteurId() {
-		return this.pProducteur.identification();
 	}
 
 	@Override

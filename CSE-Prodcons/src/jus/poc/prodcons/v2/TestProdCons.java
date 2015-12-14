@@ -10,7 +10,7 @@ import jus.poc.prodcons.options.Properties;
 import jus.poc.prodcons.utils.SimpleLogger;
 
 public class TestProdCons extends Simulateur {
-
+	/* Default LOG params */
 	private static String LOG_LEVEL = "INFO";
 	private static String LOG_FOLDER = "logs/";
 	private static boolean LOG_IN_FILE = false;
@@ -25,14 +25,26 @@ public class TestProdCons extends Simulateur {
 		new TestProdCons(new Observateur(), args).start();
 	}
 
-	/* Arguments the program is started with */
+	/**
+	 * Arguments the program is started with
+	 */
 	private String[] pArgs;
 
+	/**
+	 *
+	 * @param aObservateur
+	 *            Observateur
+	 * @param aArgs
+	 *            Program args
+	 */
 	public TestProdCons(Observateur aObservateur, String[] aArgs) {
 		super(aObservateur);
 		this.pArgs = aArgs;
 	}
 
+	/**
+	 * Creation of a SimpleLogger according to the apps params
+	 */
 	public void createLogger() {
 		/* Default params for log */
 		String wLevel = LOG_LEVEL;

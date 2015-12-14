@@ -9,9 +9,31 @@ import jus.poc.prodcons._Producteur;
 
 public class Producteur extends Acteur implements _Producteur {
 
+	/**
+	 * Nombre de message le producteur doit produire
+	 */
 	private int pNbMessage = 0;
+	/**
+	 * ProdCons utilisé par le Producteur pour partager des messages
+	 */
 	private ProdCons pProdCons;
 
+	/**
+	 *
+	 * @param aObservateur
+	 *            Observateur
+	 * @param aProdCons
+	 *            ProdCons dans lequel le producteur va déposer des messages
+	 * @param aMoyenneTempsDeTraitement
+	 *            Temps moyen de traitement d'un message.
+	 * @param aDeviationTempsDeTraitement
+	 *            Déviation du temps moyen de traitement d'un message
+	 * @param aMoyenneNbMessages
+	 *            Nombre moyen de messages à produire
+	 * @param aDeviationNbMessages
+	 *            Déviation du nombre moyen de messages à produire
+	 * @throws ControlException
+	 */
 	protected Producteur(Observateur aObservateur, ProdCons aProdCons,
 			int aMoyenneTempsDeTraitement, int aDeviationTempsDeTraitement,
 			int aMoyenneNbMessages, int aDeviationNbMessages)
@@ -29,6 +51,15 @@ public class Producteur extends Acteur implements _Producteur {
 		return this.pNbMessage;
 	}
 
+	/**
+	 * Execution d'un Thread Producteur. Un consommateur va produire
+	 * `pNbMessage` messages dans ProdCons après avoir effectuer un traitement
+	 * sur ces messages.
+	 *
+	 * Le traitement d'un message est simulé par un appel à Thread.Wait. Les
+	 * temps de traitements sont générés aléatoirement selon une loi uniforme de
+	 * paramètres `moyenneTempsDeTraitement` et `deviationTempsDeTraitement
+	 */
 	@Override
 	public void run() {
 		int wI = 1;
