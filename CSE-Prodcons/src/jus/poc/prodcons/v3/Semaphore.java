@@ -17,7 +17,6 @@ public class Semaphore {
 			}
 		}
 		this.pResidu--;
-
 	}
 
 	public synchronized void reveiller() {

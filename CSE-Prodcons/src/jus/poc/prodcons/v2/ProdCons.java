@@ -23,8 +23,8 @@ public class ProdCons implements Tampon {
 	 */
 	public ProdCons(int aTaille) {
 		this.buffer = new Message[aTaille];
-		this.prod = new Semaphore(1);
-		this.cons = new Semaphore(1);
+		this.prod = new Semaphore(aTaille);
+		this.cons = new Semaphore(0);
 	}
 
 	@Override

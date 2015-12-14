@@ -6,6 +6,7 @@ import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
 import jus.poc.prodcons.utils.SimpleLogger;
+import jus.poc.prodcons.v2.Semaphore;
 
 public class ProdCons implements Tampon {
 
@@ -26,8 +27,8 @@ public class ProdCons implements Tampon {
 	public ProdCons(Observateur aObservateur, int aTaille) {
 		this.pObservateur = aObservateur;
 		this.buffer = new Message[aTaille];
-		this.prod = new Semaphore(1);
-		this.cons = new Semaphore(1);
+		this.prod = new Semaphore(aTaille);
+		this.cons = new Semaphore(0);
 	}
 
 	@Override

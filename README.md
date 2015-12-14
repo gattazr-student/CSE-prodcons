@@ -20,6 +20,12 @@ tout de même dans le fichier de log si il a été activé.
 ## Objectif 2:
 - Création de la classe Sémaphore
 - Utilisation de deux sémaphores dans ProdCons
+	- Sémaphore(0) 'bloquante' à la création pour les Consommateurs
+	- Sémaphore(tailleBuffer) 'ouverte' à la création pour les Producteurs. Le résidu dans la Sémaphore représente le nombre 
+libre 
+de blocs 
+réstant 
+dans le buffer.
 
 ## Objectif 3:
 - Ajout des appels aux méthodes de l'Observateur
