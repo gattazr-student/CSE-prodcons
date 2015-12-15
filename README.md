@@ -39,3 +39,9 @@ tout de même dans le fichier de log si il a été activé.
 - Ajout d'une Map<Integer, Semaphore> dans Prodcons. Cette map stocke pour chaque producteur la sémaphore qui lui est associé lorsqu'il est en attente de la consommation complète de son Message. Nous utilisons une map car cela nous permet de ne pas avoir connaissance du nombre de producteur. La clé de cette Map est l'identifiant du Producteur du message.
 
 > Pour que cela fonctionne correctement, nous assurons que deux Producteurs ont un identifiant différent.
+## Objectif 5:
+- Suppression de la classe Sémaphore
+- Utilisation d'un object Lock (ReentrantLock) pour empécher la modification concurrente du buffer dans ProdCons
+- Utilisation d'objets Condition pour bloquer les Producteurs ou Consommateurs si le buffer dans ProdCons est plein ou vide
+
+
