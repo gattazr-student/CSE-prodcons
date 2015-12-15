@@ -59,7 +59,7 @@ Dans cette seconde version du programme, nous avons créé une classe Sémaphore
 ---
 <!--==========================  OBJECTIF 3 ==========================-->
 ## Objectif 3:
-Passer de la version de l'object 2 à l'objectif 3 a été très simple. En effet, il a simplement fallu détecter où les méthodes de l'object ``Observateur`` devait être appelé et rajouter ces appels.
+Passer de la version de l'objectif 2 à l'objectif 3 a été très simple. En effet, il a simplement fallu détecter où les méthodes de l'object ``Observateur`` devait être appelé et rajouter ces appels.
 
 ### Résumé des opérations:
 - Ajout des appels aux méthodes de l'Observateur
@@ -100,7 +100,12 @@ Nous avons donc supprimé la classe Sémaphore et utilisé à la place des objec
 ---
 <!--==========================  OBJECTIF 6 ==========================-->
 ## Objectif 6:
-TODO
+Comme pour la version de l'objectif 5, cette version a été effectué sur la base de l'objectif 3. Le but était ici de remplacer la classe Obervateur fournie par notre propre version afin de nous assurer que certaines propriétés du protocole pour l’objectif n°3 soient toujours respectées.
+
+Pour ce faire, une nouvelle classe ObservateurCtrl à été créée. Toutes les méthodes que l'on pouvait trouver dans la classe Observateur originale ont donc été recréée afin de répondre à notre besoin. 
+
+Malheureusement par manque de temps nous n'avons pas pu terminer le travail commencé et cette version n'est pas plainement fonctionnelle. 
 
 ### Résumé des opérations:
-TODO
+- Création de la classe ObservateurCtrl.
+- Utilisation de la classe ObservateurCtrl dans le reste du programme afin de remplacer la classe Observateur existante.
