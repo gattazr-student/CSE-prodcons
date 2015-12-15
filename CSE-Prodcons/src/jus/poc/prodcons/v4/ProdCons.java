@@ -9,7 +9,6 @@ import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
 import jus.poc.prodcons.utils.SimpleLogger;
-import jus.poc.prodcons.v2.Semaphore;
 
 public class ProdCons implements Tampon {
 
