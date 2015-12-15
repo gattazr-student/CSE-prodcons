@@ -9,16 +9,38 @@ import jus.poc.prodcons._Consommateur;
 
 public class Consommateur extends Acteur implements _Consommateur {
 
+	/**
+	 * Nombre de messages lus par le consommateur
+	 */
 	private int pNbMessage = 0;
+	/**
+	 * ProdCons utilisé par le Consommateur pour récupérer des messages
+	 */
 	private ProdCons pProdCons;
-	private ObservateurCtrl obsCtrl;
 
+	/**
+	 * ObservateurCtrl
+	 */
+	private ObservateurCtrl pObsCtrl;
+
+	/**
+	 *
+	 * @param aObservateur
+	 *            Observateur
+	 * @param aProdCons
+	 *            ProdCons dans lequel le consommateur va chercher des messages
+	 * @param aMoyenneTempsDeTraitement
+	 *            Temps moyen de traitement d'un message.
+	 * @param aDeviationTempsDeTraitement
+	 *            Déviation du temps moyen de traitement d'un message
+	 * @throws ControlException
+	 */
 	protected Consommateur(ObservateurCtrl aObsCtrl, Observateur aObservateur,
 			ProdCons aProdCons, int aMoyenneTempsDeTraitement,
 			int aDeviationTempsDeTraitement) throws ControlException {
 		super(Acteur.typeConsommateur, aObservateur, aMoyenneTempsDeTraitement,
 				aDeviationTempsDeTraitement);
-		this.obsCtrl = aObsCtrl;
+		this.pObsCtrl = aObsCtrl;
 		this.pProdCons = aProdCons;
 	}
 
@@ -27,6 +49,15 @@ public class Consommateur extends Acteur implements _Consommateur {
 		return this.pNbMessage;
 	}
 
+	/**
+	 * Execution d'un Thread Consommateur. Un consommateur va récupérer tant
+	 * qu'il le peut des messages dans ProdCons et effectuer un traitement sur
+	 * ces messages.
+	 *
+	 * Le traitement d'un message est simulé par un appel à Thread.Wait. Les
+	 * temps de traitements sont générés aléatoirement selon une loi uniforme de
+	 * paramètres `moyenneTempsDeTraitement` et `deviationTempsDeTraitement
+	 */
 	@Override
 	public void run() {
 		int wAlea;
@@ -45,9 +76,9 @@ public class Consommateur extends Acteur implements _Consommateur {
 			wAlea = Aleatoire.valeur(moyenneTempsDeTraitement(),
 					deviationTempsDeTraitement());
 
-			/* Appel à observateur */
+			/* Appel aux observateurs */
 			try {
-				this.obsCtrl.consommationMessage(this, wMessage, wAlea);
+				this.pObsCtrl.consommationMessage(this, wMessage, wAlea);
 				this.observateur.consommationMessage(this, wMessage, wAlea);
 			} catch (ControlException e1) {
 				e1.printStackTrace();

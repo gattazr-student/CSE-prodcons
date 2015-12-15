@@ -6,24 +6,50 @@ import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
 import jus.poc.prodcons.utils.SimpleLogger;
-import jus.poc.prodcons.v2.Semaphore;
 
 public class ProdCons implements Tampon {
 
+	/**
+	 * Prochain index d'écriture dans le buffer
+	 */
 	private int in = 0;
+	/**
+	 * Prochain index de lecture dans le buffer
+	 */
 	private int out = 0;
+	/**
+	 * Nombre de messages actuellement dans le buffer
+	 */
 	private int nbPlein = 0;
+
+	/**
+	 * Observateur de M. MORAT
+	 */
 	private Observateur pObservateur;
+
+	/**
+	 * Notre Observateur
+	 */
 	private ObservateurCtrl pObsCtrl;
 
-	Message[] buffer = null;
-	Semaphore prod = null;
-	Semaphore cons = null;
+	/**
+	 * Buffer contenant des Messages
+	 */
+	private Message[] buffer = null;
+
+	/**
+	 * Semaphore des Producteurs
+	 */
+	private Semaphore prod = null;
+	/**
+	 * Semaphore des Consommateurs
+	 */
+	private Semaphore cons = null;
 
 	/**
 	 *
 	 * @param taille
-	 *            La taille de notre buffer
+	 *            Taille du buffer utilisé pour stocker des Messages
 	 */
 	public ProdCons(ObservateurCtrl aObsCtrl, Observateur aObservateur,
 			int aTaille) {
@@ -40,8 +66,8 @@ public class ProdCons implements Tampon {
 	}
 
 	@Override
-	public Message get(_Consommateur aConsommateur) throws Exception,
-			InterruptedException {
+	public Message get(_Consommateur aConsommateur)
+			throws Exception, InterruptedException {
 		this.cons.attendre();
 		Message wMessage;
 		synchronized (this) {
@@ -53,7 +79,7 @@ public class ProdCons implements Tampon {
 			SimpleLogger.out.logInfo(this, "<Consommation>",
 					"%s consommé par Consommateur %d ", wMessage,
 					aConsommateur.identification());
-			/* Appel à observateur */
+			/* Appel aux observateurs */
 			pObsCtrl.retraitMessage(aConsommateur, wMessage);
 			pObservateur.retraitMessage(aConsommateur, wMessage);
 		}
@@ -75,7 +101,7 @@ public class ProdCons implements Tampon {
 					"%s produit par Producteur %d ", aMessage,
 					aProducteur.identification());
 
-			/* Appel à observateur */
+			/* Appel aux observateurs */
 			pObsCtrl.depotMessage(aProducteur, aMessage);
 			pObservateur.depotMessage(aProducteur, aMessage);
 		}
