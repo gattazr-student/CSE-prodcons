@@ -10,7 +10,7 @@ import jus.poc.prodcons.options.Properties;
 import jus.poc.prodcons.utils.SimpleLogger;
 
 public class TestProdCons extends Simulateur {
-
+	/* Default LOG params */
 	private static String LOG_LEVEL = "INFO";
 	private static String LOG_FOLDER = "logs/";
 	private static boolean LOG_IN_FILE = false;
@@ -23,21 +23,36 @@ public class TestProdCons extends Simulateur {
 	 */
 	public static void main(String[] args) {
 		new TestProdCons(new ObservateurCtrl(), new Observateur(), args)
-		.start();
+				.start();
 	}
 
-	public ObservateurCtrl obsCtrl;
-
-	/* Arguments the program is started with */
+	/**
+	 * Arguments the program is started with
+	 */
 	private String[] pArgs;
 
+	/**
+	 * Observateur
+	 */
+	private ObservateurCtrl pObsCtrl;
+
+	/**
+	 *
+	 * @param aObservateur
+	 *            Observateur
+	 * @param aArgs
+	 *            Program args
+	 */
 	public TestProdCons(ObservateurCtrl aObsCtrl, Observateur aObservateur,
 			String[] aArgs) {
 		super(aObservateur);
-		this.obsCtrl = aObsCtrl;
+		this.pObsCtrl = aObsCtrl;
 		this.pArgs = aArgs;
 	}
 
+	/**
+	 * Creation of a SimpleLogger according to the apps params
+	 */
 	public void createLogger() {
 		/* Default params for log */
 		String wLevel = LOG_LEVEL;
@@ -87,11 +102,11 @@ public class TestProdCons extends Simulateur {
 		int wNbProd = wProperties.getInt("nbProd");
 		int wNbCons = wProperties.getInt("nbCons");
 
-		/* Appel à Observateur */
-		this.obsCtrl.init(wNbProd, wNbCons, wTailleBuffer);
+		/* Appel aux Observateurs */
+		this.pObsCtrl.init(wNbProd, wNbCons, wTailleBuffer);
 		this.observateur.init(wNbProd, wNbCons, wTailleBuffer);
 
-		ProdCons wProdCons = new ProdCons(this.obsCtrl, this.observateur,
+		ProdCons wProdCons = new ProdCons(this.pObsCtrl, this.observateur,
 				wTailleBuffer);
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
 
@@ -101,11 +116,11 @@ public class TestProdCons extends Simulateur {
 		for (int wI = 0; wI < wNbProd; wI++) {
 			SimpleLogger.out.logDebug(this, "<Main>",
 					"Création du producteur %d", (wI + 1));
-			Producteur wProducteur = new Producteur(this.obsCtrl,
+			Producteur wProducteur = new Producteur(this.pObsCtrl,
 					this.observateur, wProdCons, wTProduction, wDTProduction,
 					wNbMessage, wDNbMessage);
-			/* Appel à Observateur */
-			this.obsCtrl.newProducteur(wProducteur);
+			/* Appel aux Observateurs */
+			this.pObsCtrl.newProducteur(wProducteur);
 			this.observateur.newProducteur(wProducteur);
 			wProducteurs.add(wProducteur);
 			wProducteur.start();
@@ -117,11 +132,11 @@ public class TestProdCons extends Simulateur {
 		for (int wI = 0; wI < wNbCons; wI++) {
 			SimpleLogger.out.logDebug(this, "<Main>",
 					"Création du consommateur %d", (wI + 1));
-			Consommateur wConsommateur = new Consommateur(this.obsCtrl,
+			Consommateur wConsommateur = new Consommateur(this.pObsCtrl,
 					this.observateur, wProdCons, wTConsommation,
 					wDTConsommation);
-			/* Appel à Observateur */
-			this.obsCtrl.newConsommateur(wConsommateur);
+			/* Appel aux Observateurs */
+			this.pObsCtrl.newConsommateur(wConsommateur);
 			this.observateur.newConsommateur(wConsommateur);
 			wConsommateur.start();
 		}
@@ -137,7 +152,7 @@ public class TestProdCons extends Simulateur {
 		 */
 
 		do {
-			Thread.sleep(500);// Sorry :-)
+			Thread.yield();// Sorry :-)
 		} while (wProdCons.enAttente() > 0);
 		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
 
