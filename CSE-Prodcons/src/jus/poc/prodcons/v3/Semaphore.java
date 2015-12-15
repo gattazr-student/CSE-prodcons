@@ -25,7 +25,7 @@ public class Semaphore {
 	 * lors de la sortie de la fonction.
 	 */
 	public synchronized void attendre() {
-		if (this.pResidu == 0) {
+		if (this.pResidu <= 0) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
