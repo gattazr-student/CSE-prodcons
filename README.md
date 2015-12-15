@@ -14,10 +14,10 @@ Pour le problème que nous traitons dans ce projet, les conditions suivantes ont
 - Le nombre de message récupéré par les consommateur n'est pas défini. Tant que des messages sont présents dans le buffer, les consommateurs les récupèreront donc.
 
 Une solution acceptable à ce problème est une solution dans laquelle les conditions suivantes sont respectées.
-- (1) Le buffer est utilisé de façon optimal. C'est à dire que le buffer est utilisé au maximum de sa capacité ou de la capacité des producteurs
-- (2) Le programme ne termine que lorsque la production des messages par les producteurs et terminés et que tous les messages ont été consommés.
-- (3) Un message produit et déposé à la date T dans le buffer sera toujours consommé par une consommateur avant un message déposé à la date T+n.
-- (4) Le consommateur se présentant à la date T pourra récupérer un message avant le consommateur se présentant à la date T+n.
+1. Le buffer est utilisé de façon optimal. C'est à dire que le buffer est utilisé au maximum de sa capacité ou de la capacité des producteurs
+2. Le programme ne termine que lorsque la production des messages par les producteurs et terminés et que tous les messages ont été consommés.
+3. Un message produit et déposé à la date T dans le buffer sera toujours consommé par une consommateur avant un message déposé à la date T+n.
+4. Le consommateur se présentant à la date T pourra récupérer un message avant le consommateur se présentant à la date T+n.
 
 
 ---
