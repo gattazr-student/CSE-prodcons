@@ -1,8 +1,10 @@
 CSE-prodcons
 =============
 
-Projet court du cours Système d'exploitation de RICM4. Ce dépôt contient une solution envisageable au problème des producteurs et des consommateurs.
+- Quentin DUNAND
+- Rémi GATTAZ
 
+Projet court du cours Système d'exploitation de RICM4. Ce dépôt contient une solution envisageable au problème des producteurs et des consommateurs.
 
 ---
 <!--==========================  Producteur Consommateur ==========================-->
@@ -36,6 +38,18 @@ tout de même dans le fichier de log si il a été activé.
 <!--==========================  Terminaison ==========================-->
 ## Terminaison
 Nous avons fait le choix de ne pas conserver dans ``ProdCons`` le nombre de ``Producteur`` et de ``Consommateur`` en activité. Et puisque la terminaison des ``Consommateurs`` ne peut se faire que lorsque les ``Producteurs`` ont tous terminés, la terminaison du programme est forcé sur eux.
+
+
+---
+<!--==========================  Launch app ==========================-->
+## Lancer l'application:
+Il est énoncé dans le point ``Sorties`` que nous avons mis en place une gestion des paramètres au programmes afin de gérer les sorties. Voici donc un exemple de comment lancer notre programme
+
+```
+# java jus.poc.prodcons.vX.TestProdCons LOGLEVELINFO LOGCONSOLE LOGFILE
+```
+
+Le fichier XML contenant les paramètres pour un exécution de la version vX de notre simulateur est le fichier xml jus.poc.prodcons.options.options.vX.xml
 
 ---
 <!--==========================  OBJECTIF 1 ==========================-->
@@ -102,10 +116,15 @@ Nous avons donc supprimé la classe Sémaphore et utilisé à la place des objet
 ## Objectif 6:
 Comme pour la version de l'objectif 5, cette version a été effectué sur la base de l'objectif 3. Le but était ici de remplacer la classe Obervateur fournie par notre propre version afin de nous assurer que certaines propriétés du protocole pour l’objectif n°3 soient toujours respectées.
 
-Pour ce faire, une nouvelle classe ObservateurCtrl à été créée. Toutes les méthodes que l'on pouvait trouver dans la classe Observateur originale ont donc été recréée afin de répondre à notre besoin. 
-
-Malheureusement par manque de temps nous n'avons pas pu terminer le travail commencé et cette version n'est pas pleinement fonctionnelle. 
+Pour ce faire, une nouvelle classe ObservateurCtrl à été créée. Toutes les méthodes que l'on pouvait trouver dans la classe Observateur originale ont donc été recréée afin de répondre à notre besoin.
 
 ### Résumé des opérations:
 - Création de la classe ObservateurCtrl.
 - Utilisation de la classe ObservateurCtrl dans le reste du programme afin de remplacer la classe Observateur existante.
+
+
+---
+<!--==========================  Problèmes ==========================-->
+## Problèmes
+
+Nous avons un problème lors de l'éxécution des solutions v2, v3 et v6 que nous n'avons pas su régler. En effet, pour une raison que nous ne comprenons pas, la valeur résidu dans le sémaphore devient incohérente est le nombre de consommateurs et rédéacteurs bloqués devient alors incorrect. Nous pouvons donc avoir plusieurs fois la consommation d'un même message ou la production d'un message dans le buffer qui remplace un message non consommé.
