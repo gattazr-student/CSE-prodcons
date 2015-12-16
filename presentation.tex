@@ -1,0 +1,205 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc} % UTF-8
+\usepackage[T1]{fontenc} % UTF-8
+\usepackage{lmodern} % fonts
+\usepackage{pdfcomment} % pdf notes
+\usepackage{multicol} % multicols env
+
+%% Searpkernotes %%
+\newcommand{\speakernote}[1]{\pdfmargincomment[icon=note]{#1}}
+
+%% Theme varsaw %%
+\usetheme{Warsaw}
+
+%% 2 columns in beamer header %%
+\makeatletter
+\def\insertsectionnavigation#1{\hbox to #1{\vbox{{\usebeamerfont{section in head/foot}\usebeamercolor[fg]{section in head/foot}\def\slideentry##1##2##3##4##5##6{}\def\sectionentry##1##2##3##4##5{\ifnum##5=\c@part\def\insertsectionhead{##2\hskip1em}\def\insertsectionheadnumber{##1}\def\insertpartheadnumber{##5}\hyperlink{Navigation##3}{\ifnum\c@section=##1{\usebeamertemplate{section in head/foot}}\else{\usebeamertemplate{section in head/foot shaded}}\fi}\par\fi}\parbox[c][0cm][c]{.5\paperwidth}{\begin{multicols}{2}\dohead\end{multicols}}\space}}\hfil}}
+\def\insertsubsectionnavigation#1{\hbox to #1{\vbox{{\usebeamerfont{subsection in head/foot}\usebeamercolor[fg]{subsection in head/foot}\vskip0.5625ex\beamer@currentsubsection=0\def\sectionentry##1##2##3##4##5{}\def\slideentry##1##2##3##4##5##6{\ifnum##6=\c@part\ifnum##1=\c@section\ifnum##2>\beamer@currentsubsection\beamer@currentsubsection=##2\def\insertsubsectionhead{##5}\def\insertsectionheadnumber{##1}\def\insertsubsectionheadnumber{##2}\def\insertpartheadnumber{##6}\beamer@link(##4){\ifnum\c@subsection=##2{\usebeamertemplate{subsection in head/foot}}\else{\usebeamertemplate{subsection in head/foot shaded}}\fi\hfill}\par\fi\fi\fi}\hspace*{0.5em}\parbox[c][0cm][c]{\dimexpr.5\paperwidth-1em\relax}{\begin{multicols}{2}\dohead\vskip0.5625ex\end{multicols}}\space}\hfil}}}
+\setbeamertemplate{headline}{\leavevmode\@tempdimb=2.4375ex\ifnum\beamer@subsectionmax<\beamer@sectionmax\multiply\@tempdimb by\beamer@sectionmax\else\multiply\@tempdimb by\beamer@subsectionmax\fi\ifdim\@tempdimb>0pt\advance\@tempdimb by 1.125ex\begin{beamercolorbox}[wd=.5\paperwidth,ht=0.5\@tempdimb,dp=2ex]{section in head/foot}\vbox to0.5\@tempdimb{\vfill\insertsectionnavigation{.5\paperwidth}\vfill}\end{beamercolorbox}\begin{beamercolorbox}[wd=.5\paperwidth,ht=0.5\@tempdimb,dp=2ex]{subsection in head/foot}\vbox to0.5\@tempdimb{\vfill\insertsubsectionnavigation{.5\paperwidth}\vfill}\end{beamercolorbox}\fi}
+\makeatother
+
+%% Add footline %%
+\beamertemplatenavigationsymbolsempty
+\setbeamerfont{page number in head/foot}{size=\large}
+\setbeamertemplate{footline}[frame number]
+\logo{\includegraphics[height=15mm]{medias/logo.png}}
+
+\title[CSE-ProdCons]{CSE\\Problème des producteurs et consommateurs}
+\subtitle{}
+\author{Quentin DUNAND, Rémi GATTAZ}
+\date{17 Décembre 2015}
+\subject{producteur,consommateur,threads,semaphore,concurrent}
+
+
+\begin{document}
+
+    % Title frame
+    \frame{
+        \titlepage
+    }
+
+    % Table of Contents
+    \begin{frame}
+        \frametitle{Summary}
+        \setcounter{tocdepth}{1}
+        \tableofcontents
+    \end{frame}
+
+    \section{Le problème}
+
+    \begin{frame}
+        \frametitle{Le problème des producteurs et des consommateurs}
+
+        \begin{itemize}
+            \item Problème classique de multithreading
+            \item[ ]
+            \item Production de messages
+            \item[ ]
+            \item Consommation de mesages
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Les conditions d'acceptations}
+
+        \begin{itemize}
+            \item[1] Buffer utilisé de façon optimal. Maximum de sa capacité ou de la capacité des producteurs
+            \item[2] Terminaison du programme : production de messages terminés et tous les messages consommés.
+            \item[3] Message déposé à la date T consommé avant message déposé à la date T+n.
+            \item[4] Consommateur se présentant à la date T consomme avant un consommateur se présentant à la date T+n.
+        \end{itemize}
+    \end{frame}
+
+    \section{Les objectifs}
+
+    \subsection{Objectif 1}
+    \begin{frame}
+        \frametitle{Objectif 1}
+        \begin{block}{Nos choix}
+            Implémentation naïve du problème.\\
+            Utilisation des méthodes wait() et notifyAll()
+        \end{block}
+
+        \begin{alertblock}{Problème}
+            Vol de cycles
+        \end{alertblock}
+    \end{frame}
+
+
+    \subsection{Objectif 2}
+    \begin{frame}
+        \frametitle{Objectif 2}
+        \begin{block}{Nos choix}
+            Création d'une classe Semaphore
+        \end{block}
+
+        \begin{exampleblock}{Le gain}
+            Plus de vol de cycles
+        \end{exampleblock}
+
+        \begin{alertblock}{Problème}
+            Une sémaphore parfois non bloquante
+        \end{alertblock}
+    \end{frame}
+
+
+    \subsection{Objectif 3}
+    \begin{frame}
+        \frametitle{Objectif 3}
+        \begin{block}{Nos choix}
+            Ajout de l'Observateur
+        \end{block}
+
+        \begin{exampleblock}{Le gain}
+            Apporte la vérification de certaines conditions d'acceptations
+        \end{exampleblock}
+    \end{frame}
+
+
+
+    \subsection{Objectif 4}
+    \begin{frame}
+        \frametitle{Objectif 4}
+        Ajout de deux conditions :
+        \begin{itemize}
+            \item Blocage des producteurs avant n consommations
+            \item Message retiré après n consommations
+        \end{itemize}
+
+        \begin{alertblock}{Problème}
+            Imbrication de blocs synchronisés
+        \end{alertblock}
+
+        \begin{exampleblock}{Solution}
+            Ajout de 2 Maps dans ProdCons
+            \begin{itemize}
+                \item Map contenant des Sémaphores
+                \item Map contenant les nombres d'exemplaires
+            \end{itemize}
+        \end{exampleblock}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Objectif 4}
+
+        \begin{alertblock}{Problème}
+            Information nombre d'exemplaires
+        \end{alertblock}
+
+        \begin{exampleblock}{Solution}
+            Cast de Message en MessageX
+        \end{exampleblock}
+    \end{frame}
+
+    \subsection{Objectif 5}
+    \begin{frame}
+        \frametitle{Objectif 5}
+        \begin{block}{Nos choix}
+            Utilisation de Lock, Signal et Condition
+        \end{block}
+
+        \begin{exampleblock}{Solution}
+            Une alternative à Sémaphore
+        \end{exampleblock}
+    \end{frame}
+
+    \subsection{Objectif 6}
+    \begin{frame}
+        \frametitle{Objectif 6}
+        \begin{block}{Nos choix}
+            Utilisation d'une Queue\\
+            Utilisation de deux HashSet\\
+            Utilisation de deux HashTable
+        \end{block}
+
+        \begin{alertblock}{Problème}
+            Mauvais compréhension du sujet
+        \end{alertblock}
+
+        \begin{exampleblock}{Solution}
+            Vérification du FIFO dans le buffer des Messages
+        \end{exampleblock}
+    \end{frame}
+
+    \section{Conclusion}
+    \begin{frame}
+
+        \begin{alertblock}{Problème}
+            Problème de la sémaphore identifié mais pas de solution trouvé.
+        \end{alertblock}
+
+        \begin{exampleblock}{Améliorations envisagées}
+            Utilisation de Observateur.coherent()\\
+            Gestion des exceptions dans les logs\\
+        \end{exampleblock}
+
+    \end{frame}
+
+    \begin{frame}
+
+        Merci pour votre attention
+
+    \end{frame}
+
+\end{document}
