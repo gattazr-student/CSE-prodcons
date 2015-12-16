@@ -37,8 +37,16 @@ tout de même dans le fichier de log si il a été activé.
 ---
 <!--==========================  Terminaison ==========================-->
 ## Terminaison
-Nous avons fait le choix de ne pas conserver dans ``ProdCons`` le nombre de ``Producteur`` et de ``Consommateur`` en activité. Et puisque la terminaison des ``Consommateurs`` ne peut se faire que lorsque les ``Producteurs`` ont tous terminés, la terminaison du programme est forcé sur eux.
+La condition de terminaison de ces programmes a été évoqués dans le point **2** des conditions d'acceptabilité d'une solution au problème des producteurs et des consommateurs. Après avoir créé tous les producteurs et consommateurs et démarré tous les threads, nous avons géré la terminaison de nos programmes de la façon suivante :
 
+Le thread "Main" effectue tout d'abord des opérations de jointures (``Thread.join(Thread aThread)``) sur tous les threads Producteurs. Lorsque cette première boucle termine, alors cela implique que la production de tous les producteurs est terminé.
+
+Ensuite, nous attendons que le buffer soit vide. Pour cela, nous utilisons la méthode nbPlein de ProdCons. Tant que cette valeur est supérieure à 0, le buffer n'est pas encore vide. Pour éviter une attente active, tant que nous détectons que le buffer n'est pas vide, nous effectuons un ``Thread.yield()`` pour commuter.
+
+Enfin, le signal ``interrupt`` est envoyé à tous les processus Consommateurs. Ceci va déclencher une exception du type ``InterruptedException`` qui, va emmener le fil d'execution du thread vers la fin de la méthode ``run()``, terminant donc le Thread.
+
+
+Cette implémentation de la terminaison nous permet d'arreter le programme de façon propre.
 
 ---
 <!--==========================  Launch app ==========================-->
