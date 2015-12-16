@@ -1,5 +1,7 @@
 package jus.poc.prodcons.v2;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Implémentation simple de Semaphore
  *
@@ -9,7 +11,7 @@ public class Semaphore {
 	/**
 	 * Résidu
 	 */
-	private int pResidu;
+	private AtomicInteger pResidu;
 
 	/**
 	 *
@@ -17,22 +19,17 @@ public class Semaphore {
 	 *            résidu
 	 */
 	public Semaphore(int aResidu) {
-		this.pResidu = aResidu;
+		this.pResidu = new AtomicInteger(aResidu);
 	}
 
 	/**
 	 * Appeler attendre est bloquant si le résidu est à 0. Résidu est décrémenté
 	 * lors de la sortie de la fonction.
 	 */
-	public synchronized void attendre() {
-		if (this.pResidu <= 0) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	public synchronized void attendre() throws InterruptedException {
+		if (this.pResidu.getAndDecrement() <= 0) {
+			wait();
 		}
-		this.pResidu--;
 
 	}
 
@@ -41,7 +38,7 @@ public class Semaphore {
 	 * bloqué sur attendre
 	 */
 	public synchronized void reveiller() {
-		this.pResidu++;
+		this.pResidu.incrementAndGet();
 		notify();
 	}
 
