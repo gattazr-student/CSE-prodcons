@@ -22,15 +22,8 @@ public class TestProdCons extends Simulateur {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		for (int wI = 0; wI < 1000; wI++) {
-			ObservateurCtrl wObsCtrl = new ObservateurCtrl();
-			new TestProdCons(wObsCtrl, new Observateur(), args).start();
-			if (wObsCtrl.coherent() == false) {
-				System.out.println("Incohérence à l'itération " + wI);
-			} else {
-				System.out.println("Cohérent à l'itération " + wI);
-			}
-		}
+		new TestProdCons(new ObservateurCtrl(), new Observateur(), args)
+				.start();
 	}
 
 	/**
