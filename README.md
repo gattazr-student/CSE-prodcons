@@ -54,7 +54,7 @@ Le fichier XML contenant les paramètres pour un exécution de la version vX de 
 ---
 <!--==========================  OBJECTIF 1 ==========================-->
 ## Objectif 1:
-Dans la première version de ce problème, nous avons implémenté une solution "naive" au problème . Utilisant les appels ``wait()`` et ``notify()``, cette solution ne satisfait cependant pas la condition d'admissibilité (4). On observer en effet beaucoup de vol de cycles.
+Dans la première version de ce problème, nous avons implémenté une solution "naive" au problème . Utilisant les appels ``wait()`` et ``notifyAll()``, cette solution ne satisfait cependant pas la condition d'admissibilité (4). On observer en effet beaucoup de vol de cycles.
 
 ### Résumé des opérations:
 - Implémentation naïve du problème Producteur/Consommateur
@@ -127,4 +127,10 @@ Pour ce faire, une nouvelle classe ObservateurCtrl à été créée. Toutes les 
 <!--==========================  Problèmes ==========================-->
 ## Problèmes
 
+### Sémaphore non bloquante
 Nous avons un problème lors de l'éxécution des solutions v2, v3 et v6 que nous n'avons pas su régler. En effet, pour une raison que nous ne comprenons pas, la valeur résidu dans le sémaphore devient incohérente est le nombre de consommateurs et rédéacteurs bloqués devient alors incorrect. Nous pouvons donc avoir plusieurs fois la consommation d'un même message ou la production d'un message dans le buffer qui remplace un message non consommé.
+
+#### Résolution
+Ce problème a été résolu lorsque nous avons remplacé l'attribut ``int pResidu`` dans la classe ``Semaphore`` par un objet du type ``AtomicInteger``.
+
+Le problème que nous détections provenait du fait que la valeur de résidu dans Sémaphore n'était pas atomique. Malgré l'utilisation de blocs synchronised, il pouvait donc arriver que à une instant T la valeur en question d'un objet soit différente dans deux threads.
