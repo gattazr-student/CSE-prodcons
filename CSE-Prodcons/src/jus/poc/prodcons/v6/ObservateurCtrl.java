@@ -12,6 +12,8 @@ import jus.poc.prodcons._Producteur;
 
 public class ObservateurCtrl {
 
+	private boolean pCoherent = true;
+
 	private int nbProd;
 	private int nbCons;
 	private int nbBuff;
@@ -24,16 +26,22 @@ public class ObservateurCtrl {
 	private Hashtable<_Producteur, Message> msgCreated;
 	private Hashtable<_Consommateur, Message> msgWithdrawn;
 
+	public boolean coherent() {
+		return this.pCoherent;
+	}
+
 	public void consommationMessage(_Consommateur c, Message m,
 			int tempsDeTraitement) throws ControlException {
+		String wMethodName = "consommationMessage";
+
 		/* ArgumentsValides */
 		if ((c == null) || (m == null) || (tempsDeTraitement <= 0)) {
-			throw new ControlException(getClass(), "consommationMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* Test de l'existence du consommateur */
 		if (consommateurs.contains(c) == false) {
-			throw new ControlException(getClass(), "consommationMessage");
+			throwControlException(wMethodName);
 		}
 
 		/*
@@ -41,26 +49,27 @@ public class ObservateurCtrl {
 		 * message m. Le message est retiré de la hashtable si c'est le cas
 		 */
 		if (msgWithdrawn.remove(c, m) == false) {
-			throw new ControlException(getClass(), "consommationMessage");
+			throwControlException(wMethodName);
 		}
 	}
 
 	public void depotMessage(_Producteur p, Message m) throws ControlException {
+		String wMethodName = "depotMessage";
 		/* ArgumentsValides */
 		if ((p == null) || (m == null)) {
-			throw new ControlException(getClass(), "depotMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* On vérifie si le message m a été produit précemment par p */
 		if (msgCreated.remove(p, m) == false) {
-			throw new ControlException(getClass(), "depotMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* Ajoute le message dans la queue des "messages dans le buffer" */
 		try {
 			msgQueue.add(m);
 		} catch (Exception e) {
-			throw new ControlException(getClass(), "depotMessage");
+			throwControlException(wMethodName);
 		}
 
 		/*
@@ -69,16 +78,17 @@ public class ObservateurCtrl {
 		 * exception
 		 */
 		if (msgQueue.size() > nbBuff) {
-			throw new ControlException(p.getClass(), "depotMessage");
+			throwControlException(wMethodName);
 		}
 	}
 
 	public void init(int nbProducteurs, int nbConsommateurs, int nbBuffers)
 			throws ControlException {
+		String wMethodName = "init";
 		/* ArgumentsValides */
 		if ((nbProducteurs <= 0) || (nbConsommateurs <= 0)
 				|| (nbBuffers <= 0)) {
-			throw new ControlException(getClass(), "init");
+			throwControlException(wMethodName);
 		}
 		this.nbProd = nbProducteurs;
 		this.nbCons = nbConsommateurs;
@@ -93,43 +103,46 @@ public class ObservateurCtrl {
 	}
 
 	public void newConsommateur(_Consommateur c) throws ControlException {
+		String wMethodName = "newConsommateur";
 		/* ArgumentsValides */
 		if (c == null) {
-			throw new ControlException(getClass(), "newConsommateur");
+			throwControlException(wMethodName);
 		}
 
 		consommateurs.add(c);
 
 		/* On verifie qu'il n'y a pas trop de consommateur */
 		if (consommateurs.size() > nbCons) {
-			throw new ControlException(getClass(), "newConsommateur");
+			throwControlException(wMethodName);
 		}
 	}
 
 	public void newProducteur(_Producteur p) throws ControlException {
+		String wMethodName = "newProducteur";
 		/* ArgumentsValides */
 		if (p == null) {
-			throw new ControlException(getClass(), "newProducteur");
+			throwControlException(wMethodName);
 		}
 
 		producteurs.add(p);
 
 		/* On vérifie qu'il n'y a pas trop de producteurs */
 		if (producteurs.size() > nbProd) {
-			throw new ControlException(getClass(), "newProducteur");
+			throwControlException(wMethodName);
 		}
 	}
 
 	public void productionMessage(_Producteur p, Message m,
 			int tempsDeTraitement) throws ControlException {
+		String wMethodName = "productionMessage";
 		/* ArgumentsValides */
 		if ((p == null) || (m == null) || (tempsDeTraitement <= 0)) {
-			throw new ControlException(getClass(), "productionMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* Test de l'existence du producteur */
 		if (producteurs.contains(p) == false) {
-			throw new ControlException(p.getClass(), "productionMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* Ajout du message dans la Table des messages produits */
@@ -138,13 +151,14 @@ public class ObservateurCtrl {
 
 	public void retraitMessage(_Consommateur c, Message m)
 			throws ControlException {
+		String wMethodName = "retraitMessage";
 		/* ArgumentsValides */
 		if ((c == null) || (m == null)) {
-			throw new ControlException(c.getClass(), "retraitMessage");
+			throwControlException(wMethodName);
 		}
 
 		if (!consommateurs.contains(c)) {
-			throw new ControlException(c.getClass(), "retraitMessage");
+			throwControlException(wMethodName);
 		}
 
 		/* Retire la tête de la queue */
@@ -158,8 +172,14 @@ public class ObservateurCtrl {
 		 * en paramètre
 		 */
 		if (msgTemp != m) {
-			throw new ControlException(c.getClass(), "retraitMessage");
+			throwControlException(wMethodName);
 		}
+	}
+
+	private void throwControlException(String aMethodName)
+			throws ControlException {
+		this.pCoherent = false;
+		throw new ControlException(getClass(), aMethodName);
 	}
 
 }
