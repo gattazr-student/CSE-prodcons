@@ -55,37 +55,37 @@ public class Consommateur extends Acteur implements _Consommateur {
 	 */
 	@Override
 	public void run() {
-		int wAlea;
-		Message wMessage = null;
-		while (true) {
-			/* Récupère un message */
-			try {
-				wMessage = this.pProdCons.get(this);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			int wAlea;
+			Message wMessage = null;
+			while (true) {
 
-			/* Calcul du temps de traitement */
-			wAlea = Aleatoire.valeur(moyenneTempsDeTraitement(),
-					deviationTempsDeTraitement());
+				/* Récupère un message */
+				try {
+					wMessage = this.pProdCons.get(this);
+				} catch (ControlException e) {
+					e.printStackTrace();
+				}
 
-			/* Appel à observateur */
-			try {
-				this.observateur.consommationMessage(this, wMessage, wAlea);
-			} catch (ControlException e1) {
-				e1.printStackTrace();
-			}
+				/* Calcul du temps de traitement */
+				wAlea = Aleatoire.valeur(moyenneTempsDeTraitement(),
+						deviationTempsDeTraitement());
 
-			/* Attente active pour simuler un traitement */
-			try {
+				/* Appel à observateur */
+				try {
+					this.observateur.consommationMessage(this, wMessage, wAlea);
+				} catch (ControlException e1) {
+					e1.printStackTrace();
+				}
+
+				/* Attente active pour simuler un traitement */
 				Thread.sleep(wAlea);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+
+				this.pNbMessage++;
 			}
 
-			this.pNbMessage++;
+		} catch (InterruptedException e) {
+			/* Thread was interrupted to be stopped */
 		}
 	}
 }
