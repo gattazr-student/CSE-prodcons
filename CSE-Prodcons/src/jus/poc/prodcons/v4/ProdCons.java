@@ -3,6 +3,7 @@ package jus.poc.prodcons.v4;
 import java.util.HashMap;
 import java.util.Map;
 
+import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Tampon;
@@ -78,7 +79,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(_Consommateur aConsommateur)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		this.cons.attendre();
 
 		MessageX wMessageX;
@@ -133,7 +134,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public void put(_Producteur aProducteur, Message aMessage)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		this.prod.attendre();
 
 		MessageX wMessageX = ((MessageX) aMessage);

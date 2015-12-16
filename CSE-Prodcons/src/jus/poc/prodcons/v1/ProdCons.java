@@ -1,5 +1,6 @@
 package jus.poc.prodcons.v1;
 
+import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
@@ -42,7 +43,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized Message get(_Consommateur aConsommateur)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		while (nbPlein <= 0) {
 			wait();
 		}
@@ -63,7 +64,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized void put(_Producteur aProducteur, Message aMessage)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		while (nbPlein >= taille()) {
 			wait();
 		}

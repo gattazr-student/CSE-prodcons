@@ -4,6 +4,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Tampon;
@@ -66,7 +67,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(_Consommateur aConsommateur)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		this.pLock.lock();
 
 		try {
@@ -98,7 +99,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public void put(_Producteur aProducteur, Message aMessage)
-			throws Exception, InterruptedException {
+			throws InterruptedException, ControlException {
 		this.pLock.lock();
 
 		try {
