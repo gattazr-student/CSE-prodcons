@@ -22,8 +22,15 @@ public class TestProdCons extends Simulateur {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new TestProdCons(new ObservateurCtrl(), new Observateur(), args)
-				.start();
+		for (int wI = 0; wI < 1000; wI++) {
+			ObservateurCtrl wObsCtrl = new ObservateurCtrl();
+			new TestProdCons(wObsCtrl, new Observateur(), args).start();
+			if (wObsCtrl.coherent() == false) {
+				System.out.println("Incohérence à l'itération " + wI);
+			} else {
+				System.out.println("Cohérent à l'itération " + wI);
+			}
+		}
 	}
 
 	/**
@@ -109,6 +116,7 @@ public class TestProdCons extends Simulateur {
 		ProdCons wProdCons = new ProdCons(this.pObsCtrl, this.observateur,
 				wTailleBuffer);
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
+		List<Consommateur> wConsommateurs = new LinkedList<Consommateur>();
 
 		/* Création des producteurs */
 		SimpleLogger.out.logInfo(this, "<Main>", "%d Producteur(s) à créer",
@@ -138,6 +146,7 @@ public class TestProdCons extends Simulateur {
 			/* Appel aux Observateurs */
 			this.pObsCtrl.newConsommateur(wConsommateur);
 			this.observateur.newConsommateur(wConsommateur);
+			wConsommateurs.add(wConsommateur);
 			wConsommateur.start();
 		}
 
@@ -154,12 +163,33 @@ public class TestProdCons extends Simulateur {
 		do {
 			Thread.yield();// Sorry :-)
 		} while (wProdCons.enAttente() > 0);
-		/* Quand cette boucle est terminé, il n'y a plus de messages a lire */
+		/*
+		 * Quand cette boucle est terminé, il n'y a plus de messages a lire
+		 */
 
 		SimpleLogger.out.logInfo(this, "<Main>",
 				"Lecture de tous les messages terminés");
-		System.exit(0);
 
+		/* Interruption de tous les consommateurs */
+		for (Consommateur wConsommateur : wConsommateurs) {
+			wConsommateur.interrupt();
+		}
+
+		if (this.pObsCtrl.coherent()) {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est cohérente selon notre ObservateurCtrl");
+		} else {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est incohérente selon ObservateurCtrl");
+		}
+
+		if (this.observateur.coherent()) {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est cohérente selon Observateur");
+		} else {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est incohérente selon Observateur");
+		}
 	}
 
 }

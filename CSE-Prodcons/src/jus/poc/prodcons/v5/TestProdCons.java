@@ -99,6 +99,7 @@ public class TestProdCons extends Simulateur {
 
 		ProdCons wProdCons = new ProdCons(this.observateur, wTailleBuffer);
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
+		List<Consommateur> wConsommateurs = new LinkedList<Consommateur>();
 
 		/* Création des producteurs */
 		SimpleLogger.out.logInfo(this, "<Main>", "%d Producteur(s) à créer",
@@ -124,6 +125,7 @@ public class TestProdCons extends Simulateur {
 					wProdCons, wTConsommation, wDTConsommation);
 			/* Appel à Observateur */
 			this.observateur.newConsommateur(wConsommateur);
+			wConsommateurs.add(wConsommateur);
 			wConsommateur.start();
 		}
 
@@ -144,7 +146,19 @@ public class TestProdCons extends Simulateur {
 
 		SimpleLogger.out.logInfo(this, "<Main>",
 				"Lecture de tous les messages terminés");
-		System.exit(0);
+
+		/* Interruption de tous les consommateurs */
+		for (Consommateur wConsommateur : wConsommateurs) {
+			wConsommateur.interrupt();
+		}
+
+		if (this.observateur.coherent()) {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est cohérente");
+		} else {
+			SimpleLogger.out.logInfo("Main", "<Main>",
+					"La simulation est incohérente");
+		}
 
 	}
 

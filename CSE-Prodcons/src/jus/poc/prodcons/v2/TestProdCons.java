@@ -96,6 +96,7 @@ public class TestProdCons extends Simulateur {
 
 		ProdCons wProdCons = new ProdCons(wTailleBuffer);
 		List<Producteur> wProducteurs = new LinkedList<Producteur>();
+		List<Consommateur> wConsommateurs = new LinkedList<Consommateur>();
 
 		/* Création des producteurs */
 		SimpleLogger.out.logInfo(this, "<Main>", "%d Producteur(s) à créer",
@@ -115,8 +116,10 @@ public class TestProdCons extends Simulateur {
 		for (int wI = 0; wI < wNbCons; wI++) {
 			SimpleLogger.out.logDebug(this, "<Main>",
 					"Création du consommateur %d", (wI + 1));
-			new Consommateur(this.observateur, wProdCons, wTConsommation,
-					wDTConsommation).start();
+			Consommateur wConsommateur = new Consommateur(this.observateur,
+					wProdCons, wTConsommation, wDTConsommation);
+			wConsommateurs.add(wConsommateur);
+			wConsommateur.start();
 		}
 
 		for (Producteur wProducteur : wProducteurs) {
@@ -136,8 +139,11 @@ public class TestProdCons extends Simulateur {
 
 		SimpleLogger.out.logInfo(this, "<Main>",
 				"Lecture de tous les messages terminés");
-		System.exit(0);
 
+		/* Interruption de tous les consommateurs */
+		for (Consommateur wConsommateur : wConsommateurs) {
+			wConsommateur.interrupt();
+		}
 	}
 
 }
