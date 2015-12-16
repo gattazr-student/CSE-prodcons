@@ -74,7 +74,7 @@ public class ProdCons implements Tampon {
 			Message wMessage;
 
 			/* Stop si il n'y a pas de message */
-			while (nbPlein <= 0) {
+			if (nbPlein <= 0) {
 				this.pEmpty.await();
 			}
 
@@ -104,7 +104,7 @@ public class ProdCons implements Tampon {
 
 		try {
 			/* Stop si il n'y a pas de place dans le buffer */
-			while (nbPlein >= taille()) {
+			if (nbPlein >= taille()) {
 				this.pFull.await();
 			}
 
