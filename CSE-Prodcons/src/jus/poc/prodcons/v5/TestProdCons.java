@@ -153,10 +153,10 @@ public class TestProdCons extends Simulateur {
 		}
 
 		if (this.observateur.coherent()) {
-			SimpleLogger.out.logInfo("Main", "<Main>",
+			SimpleLogger.out.logInfo(this, "<Main>",
 					"La simulation est cohérente");
 		} else {
-			SimpleLogger.out.logInfo("Main", "<Main>",
+			SimpleLogger.out.logInfo(this, "<Main>",
 					"La simulation est incohérente");
 		}
 

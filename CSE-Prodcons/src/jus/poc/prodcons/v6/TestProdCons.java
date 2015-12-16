@@ -169,18 +169,18 @@ public class TestProdCons extends Simulateur {
 		}
 
 		if (this.pObsCtrl.coherent()) {
-			SimpleLogger.out.logInfo("Main", "<Main>",
-					"La simulation est cohérente selon notre ObservateurCtrl");
+			SimpleLogger.out.logInfo(this, "<Main>",
+					"La simulation est cohérente selon ObservateurCtrl");
 		} else {
-			SimpleLogger.out.logInfo("Main", "<Main>",
-					"La simulation est incohérente selon ObservateurCtrl");
+			SimpleLogger.out.logInfo(this, "<Main>",
+					"La simulation est incohérente ObservateurCtrl");
 		}
 
 		if (this.observateur.coherent()) {
-			SimpleLogger.out.logInfo("Main", "<Main>",
+			SimpleLogger.out.logInfo(this, "<Main>",
 					"La simulation est cohérente selon Observateur");
 		} else {
-			SimpleLogger.out.logInfo("Main", "<Main>",
+			SimpleLogger.out.logInfo(this, "<Main>",
 					"La simulation est incohérente selon Observateur");
 		}
 	}
