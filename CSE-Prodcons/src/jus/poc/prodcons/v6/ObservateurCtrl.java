@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Message;
@@ -26,12 +28,19 @@ public class ObservateurCtrl {
 	private Hashtable<_Producteur, Message> msgCreated;
 	private Hashtable<_Consommateur, Message> msgWithdrawn;
 
-	public boolean coherent() {
+	/**
+	 * Lock permettant de bloquer la lecture ou l'écriture
+	 */
+	private final Lock pLock = new ReentrantLock();
+
+	public synchronized boolean coherent() {
 		return this.pCoherent;
 	}
 
 	public void consommationMessage(_Consommateur c, Message m,
 			int tempsDeTraitement) throws ControlException {
+		this.pLock.lock();
+
 		String wMethodName = "consommationMessage";
 
 		/* ArgumentsValides */
@@ -51,9 +60,14 @@ public class ObservateurCtrl {
 		if (msgWithdrawn.remove(c, m) == false) {
 			throwControlException(wMethodName);
 		}
+
+		this.pLock.unlock();
+
 	}
 
 	public void depotMessage(_Producteur p, Message m) throws ControlException {
+		this.pLock.lock();
+
 		String wMethodName = "depotMessage";
 		/* ArgumentsValides */
 		if ((p == null) || (m == null)) {
@@ -80,10 +94,15 @@ public class ObservateurCtrl {
 		if (msgQueue.size() > nbBuff) {
 			throwControlException(wMethodName);
 		}
+
+		this.pLock.unlock();
 	}
 
 	public void init(int nbProducteurs, int nbConsommateurs, int nbBuffers)
 			throws ControlException {
+
+		this.pLock.lock();
+
 		String wMethodName = "init";
 		/* ArgumentsValides */
 		if ((nbProducteurs <= 0) || (nbConsommateurs <= 0)
@@ -100,9 +119,14 @@ public class ObservateurCtrl {
 
 		this.msgCreated = new Hashtable<_Producteur, Message>();
 		this.msgWithdrawn = new Hashtable<_Consommateur, Message>();
+
+		this.pLock.unlock();
+
 	}
 
 	public void newConsommateur(_Consommateur c) throws ControlException {
+		this.pLock.lock();
+
 		String wMethodName = "newConsommateur";
 		/* ArgumentsValides */
 		if (c == null) {
@@ -115,9 +139,13 @@ public class ObservateurCtrl {
 		if (consommateurs.size() > nbCons) {
 			throwControlException(wMethodName);
 		}
+
+		this.pLock.unlock();
 	}
 
 	public void newProducteur(_Producteur p) throws ControlException {
+		this.pLock.lock();
+
 		String wMethodName = "newProducteur";
 		/* ArgumentsValides */
 		if (p == null) {
@@ -130,10 +158,15 @@ public class ObservateurCtrl {
 		if (producteurs.size() > nbProd) {
 			throwControlException(wMethodName);
 		}
+
+		this.pLock.unlock();
+
 	}
 
 	public void productionMessage(_Producteur p, Message m,
 			int tempsDeTraitement) throws ControlException {
+		this.pLock.lock();
+
 		String wMethodName = "productionMessage";
 		/* ArgumentsValides */
 		if ((p == null) || (m == null) || (tempsDeTraitement <= 0)) {
@@ -147,10 +180,13 @@ public class ObservateurCtrl {
 
 		/* Ajout du message dans la Table des messages produits */
 		this.msgCreated.put(p, m);
+
+		this.pLock.unlock();
 	}
 
 	public void retraitMessage(_Consommateur c, Message m)
 			throws ControlException {
+		this.pLock.lock();
 		String wMethodName = "retraitMessage";
 		/* ArgumentsValides */
 		if ((c == null) || (m == null)) {
@@ -174,11 +210,13 @@ public class ObservateurCtrl {
 		if (msgTemp != m) {
 			throwControlException(wMethodName);
 		}
+		this.pLock.unlock();
 	}
 
 	private void throwControlException(String aMethodName)
 			throws ControlException {
 		this.pCoherent = false;
+		this.pLock.unlock();
 		throw new ControlException(getClass(), aMethodName);
 	}
 
