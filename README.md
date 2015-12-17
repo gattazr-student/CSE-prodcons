@@ -126,6 +126,8 @@ Comme pour la version de l'objectif 5, cette version a été effectué sur la ba
 
 Pour ce faire, une nouvelle classe ObservateurCtrl à été créée. Toutes les méthodes que l'on pouvait trouver dans la classe Observateur originale ont donc été recréée afin de répondre à notre besoin.
 
+Il semble évident que les méthodes de prodcons ne doivent jamais être exécutées en parrallèle. Nous avons donc tout d'abord pensé rendre toutes les méthodes de cet objet synchronised. Cepepdant, plusieurs appels à ces méthodes sont déja dans des blocs de ce type. Pour ne pas imbriquer de blocs synchronised, nous avons donc utilisé un objet de type Lock.
+
 ### Résumé des opérations:
 - Création de la classe ObservateurCtrl.
 - Utilisation de la classe ObservateurCtrl dans le reste du programme afin de remplacer la classe Observateur existante.
